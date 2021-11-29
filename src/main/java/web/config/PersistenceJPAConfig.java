@@ -26,9 +26,11 @@ public class PersistenceJPAConfig {
 
     //Настройка EntityManager
 
+    //класс ждя чтения переменных среды, или классов
     @Autowired
     private Environment env;
 
+    //фабрика для EntityManager
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -42,6 +44,7 @@ public class PersistenceJPAConfig {
         return em;
     }
 
+    //бин настройки подключения к базе данных
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -53,6 +56,7 @@ public class PersistenceJPAConfig {
         return dataSource;
     }
 
+    //настройка для адаптера
     final Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
@@ -63,6 +67,7 @@ public class PersistenceJPAConfig {
         return hibernateProperties;
     }
 
+    //настройка менеджера транзакций
     @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -71,6 +76,13 @@ public class PersistenceJPAConfig {
         return transactionManager;
     }
 
+    /*
+    Этот компонент нужен для того, чтобы можно было указать класс-обработчик для ан-нотации @PersistanceContext,
+    которая укажет Spring, чтобы он внедрил объект EntityManager в класс-dao.
+
+    В момент создания ApplicationContext, будет создан объект, который нужно внед-рить.
+    PersistanceAnnotationBeanPostProcessor ищет аннотации @PersistanceContext и затем создает нужный объект и внедряет его в нужном классе-dao.
+     */
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();

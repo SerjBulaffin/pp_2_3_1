@@ -8,7 +8,9 @@ import web.model.User;
 import web.service.UserServiceImpl;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @Transactional
@@ -21,7 +23,7 @@ public class UsersController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping({"/", "/users"})
+    @GetMapping("/users")
     public String usersTable(Model model) {
         model.addAttribute("usersList", userServiceImpl.getAllUsers());
         return "users";
@@ -68,5 +70,17 @@ public class UsersController {
     public String deleteUser(@PathVariable("id") int id) {
         userServiceImpl.removeUserById(id);
         return "redirect:/users";
+    }
+
+    @GetMapping("/test")
+    public String testPage(Model model) {
+        List<String> list = new ArrayList<>();
+        list.add("Privet");
+        list.add("Poka");
+        list.add("12345");
+        list.add("GlavRiba");
+        list.add("Volchiha");
+        model.addAttribute("strings", list);
+        return "test";
     }
 }
