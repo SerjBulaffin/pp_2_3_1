@@ -26,7 +26,7 @@ public class PersistenceJPAConfig {
 
     //Настройка EntityManager
 
-    //класс ждя чтения переменных среды, или классов
+    //класс для чтения переменных среды, или классов
     @Autowired
     private Environment env;
 
@@ -77,7 +77,7 @@ public class PersistenceJPAConfig {
     }
 
     /*
-    Этот компонент нужен для того, чтобы можно было указать класс-обработчик для ан-нотации @PersistanceContext,
+    Этот компонент нужен для того, чтобы можно было указать класс-обработчик для аннотации @PersistanceContext,
     которая укажет Spring, чтобы он внедрил объект EntityManager в класс-dao.
 
     В момент создания ApplicationContext, будет создан объект, который нужно внед-рить.
